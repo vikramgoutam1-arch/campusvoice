@@ -1,0 +1,76 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<!-- Profile Header -->
+<div class="bg-gray-900 rounded-2xl border border-gray-800 p-8 mb-6 relative overflow-hidden">
+  <div class="absolute top-0 left-0 right-0 h-24 bg-gradient-to-r from-indigo-600 to-indigo-800 opacity-20 rounded-t-2xl"></div>
+
+  <div class="flex items-start gap-5 relative">
+    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-600 to-indigo-800 flex items-center justify-center text-white text-2xl font-display font-bold shadow-lg">
+      {{ profile_user.username[0].upper() }}
+    </div>
+    <div class="flex-1 min-w-0">
+      <h1 class="font-display font-bold text-2xl text-white">{{ profile_user.username }}</h1>
+      <p class="text-gray-400 text-sm mt-1">
+        {{ profile_user.college_name }}
+        <span class="text-gray-700 mx-1.5">·</span>
+        {{ profile_user.department }}
+        <span class="text-gray-700 mx-1.5">·</span>
+        Semester {{ profile_user.semester }}
+      </p>
+      <p class="text-xs text-gray-600 mt-0.5">
+        Member since {{ profile_user.created_at.strftime("%B %Y") }}
+      </p>
+    </div>
+    <div class="text-right shrink-0">
+      <p class="font-display font-bold text-3xl text-brand">{{ user_posts|length }}</p>
+      <p class="text-xs text-gray-500 font-medium">Posts</p>
+    </div>
+  </div>
+</div>
+
+<!-- Posts -->
+<h2 class="font-display font-bold text-lg text-white mb-4">
+  Posts by {{ profile_user.username }}
+</h2>
+
+{% if user_posts %}
+  {% for post in user_posts %}
+  <article class="post-card bg-gray-900 rounded-2xl border border-gray-800 p-6 mb-4">
+    <div class="flex items-center gap-2 mb-3">
+      <span class="bg-indigo-950 text-brand text-xs font-bold px-3 py-1 rounded-full border border-indigo-900">
+        {{ post.category }}
+      </span>
+      <span class="text-xs text-gray-600 ml-auto">{{ post.created_at.strftime("%b %d, %Y") }}</span>
+    </div>
+    <a href="/posts/{{ post.id }}">
+      <h3 class="font-display font-bold text-white hover:text-brand transition-colors mb-2">
+        {{ post.title }}
+      </h3>
+    </a>
+    <p class="text-sm text-gray-400 leading-relaxed">
+      {{ post.content[:150] }}{% if post.content|length > 150 %}…{% endif %}
+    </p>
+    {% if post.tags %}
+    <div class="flex flex-wrap gap-1.5 mt-3">
+      {% for tag in post.tags.split(',') %}
+        <span class="bg-gray-800 text-gray-500 text-xs px-2 py-0.5 rounded-full">{{ tag.strip() }}</span>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </article>
+  {% endfor %}
+{% else %}
+  <div class="text-center py-16 bg-gray-900 rounded-2xl border border-gray-800">
+    <p class="text-3xl mb-3">✍️</p>
+    <p class="text-gray-500 text-sm">No posts yet.</p>
+    {% if current_user and current_user.id == profile_user.id %}
+    <a href="/posts/new"
+       class="mt-4 inline-block bg-indigo-600 text-white text-sm font-bold px-5 py-2 rounded-xl hover:bg-indigo-500 transition-colors">
+      Write your first post
+    </a>
+    {% endif %}
+  </div>
+{% endif %}
+
+{% endblock %}
