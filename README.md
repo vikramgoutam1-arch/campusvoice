@@ -25,4 +25,27 @@ projects, internship experiences, GATE advice, and campus life.
    cd campusvoice
 ```
 
+3. Run with Docker
+```bash
+   docker-compose up --build -d
+```
+
+4. Visit `http://localhost:8000`
+
+## 📁 Project Structure
+campusvoice/
+├── routers/
+│   ├── auth.py       # Register, login, JWT
+│   ├── posts.py      # Post CRUD
+│   ├── users.py      # User profile
+│   └── comments.py   # Threaded comments
+├── templates/        # Jinja2 HTML templates
+├── static/           # Static files
+├── main.py           # FastAPI app + page routes
+├── models.py         # SQLAlchemy models
+├── schemas.py        # Pydantic schemas
+├── database.py       # DB connection
+├── Dockerfile
+└── docker-compose.yml
+
 2. Create `.env` file
