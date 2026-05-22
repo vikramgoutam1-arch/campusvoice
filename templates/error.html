@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+{% extends "layout.html" %}
+{% block content %}
+<div class="bg-red-950/10 border border-red-900/40 rounded-2xl p-8 text-center max-w-md mx-auto my-8 shadow-sm">
+  <h1 class="font-display text-xl font-bold text-red-400 mb-2">Error {{ status_code }}</h1>
+  <p class="text-xs text-gray-400 leading-relaxed mb-4">{{ message }}</p>
+  <a href="/" class="inline-block text-xs font-semibold bg-gray-900 hover:bg-gray-800 text-gray-200 border border-gray-800 px-4 py-2 rounded-xl transition-colors">
+    Return to Home Feed
+  </a>
+</div>
+{% endblock %}

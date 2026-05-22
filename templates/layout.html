@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% if title %}{{ title }} — CampusVoice{% else %}CampusVoice{% endif %}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: { brand: '#818cf8', 'brand-dark': '#6366f1', 'brand-dim': '#1e1b4b' }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'DM Sans', sans-serif; }
+    .font-display { font-family: 'Syne', sans-serif; }
+    /* Modern, compact scrollbar styling overrides */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #0f172a; }
+    ::-webkit-scrollbar-thumb { background: #374151; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #6366f1; }
+  </style>
+</head>
+<body class="bg-[#0f172a] text-slate-300 min-h-screen antialiased flex flex-col justify-between">
+
+  <header class="bg-gray-900/95 backdrop-blur-sm border-b border-gray-800 sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-6">
+        <a href="/" class="font-display text-xl font-bold tracking-tight shrink-0">
+          <span class="text-brand">Campus</span><span class="text-white">Voice</span>
+        </a>
+        <nav class="hidden md:flex items-center gap-1">
+          <a href="/" class="text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-800 px-3 py-2 rounded-lg transition-colors">Feed</a>
+          <a href="/?category=GATE" class="text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-800 px-3 py-2 rounded-lg transition-colors">GATE</a>
+          <a href="/?category=Internship" class="text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-800 px-3 py-2 rounded-lg transition-colors">Internships</a>
+          <a href="/?category=Career" class="text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-800 px-3 py-2 rounded-lg transition-colors">Career</a>
+        </nav>
+      </div>
+      
+      <div class="flex items-center gap-3 shrink-0">
+        {% if current_user %}
+          <a href="/posts/new" class="hidden sm:inline-flex items-center gap-1.5 bg-brand-dark text-white text-sm font-semibold px-4 py-2 rounded-xl hover:bg-indigo-500 transition-colors">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path></svg>
+            New Post
+          </a>
+          <div class="flex items-center gap-2 pl-3 border-l border-gray-700">
+            <a href="/users/{{ current_user.id }}" class="flex items-center gap-2 group">
+              <div class="w-8 h-8 rounded-full bg-indigo-900 border border-indigo-700 flex items-center justify-center text-brand text-sm font-bold group-hover:border-brand transition-colors">
+                {{ current_user.username[0].upper() }}
+              </div>
+              <span class="hidden sm:block text-sm font-medium text-gray-300 group-hover:text-white transition-colors">{{ current_user.username }}</span>
+            </a>
+            <a href="/logout" class="text-xs text-gray-500 hover:text-red-400 transition-colors ml-1 font-medium">Logout</a>
+          </div>
+        {% else %}
+          <a href="/login" class="text-sm font-medium text-gray-400 hover:text-white transition-colors px-3 py-2">Login</a>
+          <a href="/register" class="bg-brand-dark text-white text-sm font-semibold px-4 py-2 rounded-xl hover:bg-indigo-500 transition-colors">Join Free</a>
+        {% endif %}
+      </div>
+    </div>
+  </header>
+
+  <div class="max-w-6xl w-full mx-auto px-4 sm:px-6 py-8 flex flex-grow gap-8">
+    <main class="flex-1 min-w-0">
+      {% block content %}{% endblock %}
+    </main>
+    
+    <aside class="w-60 shrink-0 hidden lg:flex flex-col gap-4">
+      <div class="bg-gray-900 rounded-2xl border border-gray-800 p-4">
+        <p class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-3 px-1">Categories</p>
+        <div class="flex flex-col gap-0.5">
+          {% set cats = [('🏠','All'),('🛠','Project'),('💡','Advice'),('💼','Internship'),('🚀','Career'),('🏫','Campus'),('📚','Resources'),('📝','GATE')] %}
+          {% for emoji, cat in cats %}
+            {% set is_active = (selected_category == cat) or (cat == 'All' and not selected_category) %}
+            <a href="{{ '/' if cat == 'All' else '/?category=' + cat }}" 
+               class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-medium transition-colors duration-150 border border-transparent
+                      {{ 'bg-[#312e81] text-indigo-300 border-indigo-700' if is_active else 'text-gray-400 hover:bg-[#1e1b4b] hover:text-indigo-300' }}">
+              <span>{{ emoji }}</span>{{ cat }}
+            </a>
+          {% endfor %}
+        </div>
+      </div>
+
+      {% if current_user %}
+        <div class="bg-gray-900 rounded-2xl border border-gray-800 p-4">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-10 h-10 rounded-xl bg-indigo-900 border border-indigo-700 flex items-center justify-center text-brand font-bold text-lg">
+              {{ current_user.username[0].upper() }}
+            </div>
+            <div class="min-w-0">
+              <p class="text-sm font-semibold text-white truncate">{{ current_user.username }}</p>
+              <p class="text-xs text-gray-500 truncate">{{ current_user.college_name }}</p>
+            </div>
+          </div>
+          <a href="/posts/new" class="block w-full text-center bg-indigo-950 border border-indigo-800 text-brand text-sm font-semibold px-4 py-2 rounded-xl hover:bg-indigo-900 hover:border-indigo-600 transition-all duration-150">+ Write a Post</a>
+          <a href="/logout" class="block w-full text-center text-xs text-gray-500 hover:text-red-400 transition-colors mt-2 py-1 font-medium">Sign out</a>
+        </div>
+      {% else %}
+        <div class="bg-indigo-950 rounded-2xl border border-indigo-900 p-5">
+          <p class="font-display font-bold text-white text-base mb-1">Join CampusVoice</p>
+          <p class="text-xs text-indigo-300 mb-4 leading-relaxed">Share your experience. Help a fellow student today.</p>
+          <a href="/register" class="block w-full text-center bg-brand-dark text-white text-sm font-bold py-2.5 rounded-xl hover:bg-indigo-500 transition-colors">Create Free Account</a>
+          <a href="/login" class="block w-full text-center text-xs text-indigo-400 hover:text-white transition-colors mt-2 py-1">Already have account? Login</a>
+        </div>
+      {% endif %}
+
+      <div class="bg-gray-900 rounded-2xl border border-gray-800 p-4">
+        <p class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-3">Tips</p>
+        <ul class="space-y-2">
+          <li class="flex items-start gap-2 text-xs text-gray-400"><span class="text-brand mt-0.5 shrink-0">✓</span>Be specific — real experience helps most</li>
+          <li class="flex items-start gap-2 text-xs text-gray-400"><span class="text-brand mt-0.5 shrink-0">✓</span>Add tags to reach more students</li>
+          <li class="flex items-start gap-2 text-xs text-gray-400"><span class="text-brand mt-0.5 shrink-0">✓</span>Reply to comments — build community</li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+
+  <footer class="border-t border-gray-800 bg-gray-900">
+    <div class="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
+      <span class="font-display font-bold text-white text-sm">CampusVoice</span>
+      <span class="text-xs text-gray-600">&copy; 2026 — Built by students, for students</span>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="space-y-4">
+  {% for post in posts %}
+    <article class="bg-gray-900 border border-gray-800 rounded-2xl p-5 shadow-sm transition-all duration-150 hover:-translate-y-0.5 hover:border-brand-dark group">
+      <div class="flex items-center gap-3 mb-3">
+        <div class="w-8 h-8 rounded-full bg-indigo-900 border border-indigo-700 flex items-center justify-center text-brand text-xs font-bold">
+          {{ post.author.username[0].upper() }}
+        </div>
+        <div class="min-w-0">
+          <a href="/users/{{ post.author_id }}" class="text-sm font-semibold text-gray-300 hover:text-brand transition-colors">
+            {{ post.author.username if post.author else 'Unknown' }}
+          </a>
+          <span class="block text-[10px] text-gray-500 mt-0.5">
+            {{ post.created_at.strftime("%B %d, %Y") }}
+          </span>
+        </div>
+      </div>
+
+      <div class="space-y-1.5">
+        <h2 class="text-base font-bold text-white group-hover:text-brand transition-colors">
+          <a href="/posts/{{ post.id }}">{{ post.title }}</a>
+        </h2>
+        <p class="text-xs text-gray-400 leading-relaxed line-clamp-3">
+          {{ post.content }}
+        </p>
+      </div>
+
+      <div class="mt-4 pt-3 border-t border-gray-800/60 flex items-center justify-between text-[10px]">
+        <span class="bg-gray-800 text-gray-400 px-2.5 py-1 rounded-lg font-medium border border-gray-700/50">
+          📁 {{ post.category if post.category else "General" }}
+        </span>
+        <a href="/posts/{{ post.id }}" class="text-brand font-semibold hover:text-white transition-colors flex items-center gap-1">
+          Read Thread &rarr;
+        </a>
+      </div>
+    </article>
+  {% else %}
+    <div class="text-center py-12 bg-gray-900/40 border border-gray-800 rounded-2xl">
+      <p class="text-gray-500 text-xs">No community conversations active in this category yet.</p>
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}

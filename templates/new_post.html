@@ -1,0 +1,71 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="max-w-2xl mx-auto mt-8">
+  <div class="mb-6">
+    <h1 class="font-display text-2xl font-bold text-white">Create a Post ✍️</h1>
+    <p class="text-gray-500 text-sm mt-1">Share your experience, advice, or project with the community</p>
+  </div>
+
+  <div class="bg-gray-900 rounded-2xl border border-gray-800 p-8">
+    <form action="/posts/new" method="post" class="space-y-6">
+
+      <div>
+        <label class="block text-sm font-semibold text-gray-300 mb-1.5">Post title</label>
+        <input type="text" name="title" required
+          placeholder="e.g. Best GATE CSE resources that actually worked for me"
+          class="w-full rounded-xl px-4 py-3 text-sm border font-medium"/>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-semibold text-gray-300 mb-1.5">Category</label>
+          <select name="category" required class="w-full rounded-xl px-4 py-3 text-sm border">
+            <option value="">Pick a category</option>
+            <option value="Project">🛠 Project</option>
+            <option value="Advice">💡 Advice</option>
+            <option value="Internship">💼 Internship</option>
+            <option value="Career">🚀 Career</option>
+            <option value="Campus">🏫 Campus</option>
+            <option value="Resources">📚 Resources</option>
+            <option value="GATE">📝 GATE</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-gray-300 mb-1.5">
+            Tags <span class="font-normal text-gray-500">(comma separated)</span>
+          </label>
+          <input type="text" name="tags" placeholder="GATE, CSE, study tips"
+            class="w-full rounded-xl px-4 py-3 text-sm border"/>
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-sm font-semibold text-gray-300 mb-1.5">Content</label>
+        <textarea name="content" rows="12" required
+          placeholder="Write your post here. Be specific — real experiences help people the most."
+          class="w-full rounded-xl px-4 py-3 text-sm resize-none leading-relaxed border"></textarea>
+      </div>
+
+      <div class="bg-indigo-950 rounded-xl p-4 border border-indigo-900">
+        <p class="text-xs font-bold text-brand mb-2">💡 Writing tips</p>
+        <ul class="text-xs text-indigo-300 space-y-1">
+          <li>→ Be specific — "I used Madeeasy notes + PYQs" beats "study well"</li>
+          <li>→ Share what didn't work too — equally valuable</li>
+          <li>→ Add tags so the right people find your post</li>
+        </ul>
+      </div>
+
+      <div class="flex items-center gap-3 justify-end pt-2">
+        <a href="/" class="px-5 py-2.5 border border-gray-700 rounded-xl text-sm font-medium text-gray-400 hover:bg-gray-800 transition-colors">
+          Cancel
+        </a>
+        <button type="submit"
+          class="bg-indigo-600 text-white text-sm font-bold px-8 py-2.5 rounded-xl hover:bg-indigo-500 transition-colors">
+          Publish post →
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>
+{% endblock %}

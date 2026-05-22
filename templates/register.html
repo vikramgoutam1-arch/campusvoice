@@ -1,0 +1,76 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="max-w-md mx-auto mt-8">
+  <div class="bg-gray-900 rounded-2xl border border-gray-800 overflow-hidden">
+
+    <div class="bg-gradient-to-r from-indigo-600 to-indigo-800 p-8">
+      <h1 class="font-display text-2xl font-bold text-white mb-1">Join CampusVoice 🎓</h1>
+      <p class="text-indigo-200 text-sm">Create your free student account</p>
+    </div>
+
+    <div class="p-8">
+      {% if error %}
+      <div class="bg-red-950 border border-red-800 text-red-400 text-sm px-4 py-3 rounded-xl mb-5 flex items-center gap-2">
+        <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        {{ error }}
+      </div>
+      {% endif %}
+
+      <form action="/register" method="post" class="space-y-4">
+        <div>
+          <label class="block text-sm font-semibold text-gray-300 mb-1.5">Username</label>
+          <input type="text" name="username" required placeholder="vikramaditya"
+            class="w-full rounded-xl px-4 py-3 text-sm border"/>
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-gray-300 mb-1.5">Email</label>
+          <input type="email" name="email" required placeholder="you@gmail.com"
+            class="w-full rounded-xl px-4 py-3 text-sm border"/>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-sm font-semibold text-gray-300 mb-1.5">College</label>
+            <input type="text" name="college_name" required placeholder="SIRT Bhopal"
+              class="w-full rounded-xl px-4 py-3 text-sm border"/>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-gray-300 mb-1.5">Department</label>
+            <input type="text" name="department" required placeholder="CSE"
+              class="w-full rounded-xl px-4 py-3 text-sm border"/>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-gray-300 mb-1.5">Semester (1–8)</label>
+          <select name="semester" required class="w-full rounded-xl px-4 py-3 text-sm border">
+            <option value="">Select semester</option>
+            <option value="1">Semester 1</option>
+            <option value="2">Semester 2</option>
+            <option value="3">Semester 3</option>
+            <option value="4">Semester 4</option>
+            <option value="5">Semester 5</option>
+            <option value="6">Semester 6</option>
+            <option value="7">Semester 7</option>
+            <option value="8">Semester 8</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-gray-300 mb-1.5">Password</label>
+          <input type="password" name="password" required placeholder="Min 6 characters"
+            class="w-full rounded-xl px-4 py-3 text-sm border"/>
+        </div>
+        <button type="submit"
+          class="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl hover:bg-indigo-500 transition-colors text-sm">
+          Create my account
+        </button>
+      </form>
+
+      <p class="text-center text-sm text-gray-500 mt-5">
+        Already have an account?
+        <a href="/login" class="text-brand font-semibold hover:text-indigo-400 transition-colors">Login</a>
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}
