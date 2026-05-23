@@ -154,10 +154,21 @@ def register_page(request: Request):
  
 @app.post("/register")
 def register_submit(request: Request,
-                    username: str = Form(...), email: str = Form(...),
-                    password: str = Form(...), college_name: str = Form(...),
-                    department: str = Form(...), semester: int = Form(...),
+                    username: str = Form(...),
+                    email: str = Form(...),
+                    password: str = Form(...),
+                    college_name: str = Form(...),
+                    department: str = Form(...),
+                    semester: int = Form(...),
                     db: Session = Depends(get_db)):
+    
+    if not email.endswith("@sirt.ac.in"):
+        return templates.TemplateResponse("register.html", {
+            "request": request,
+            "error": "Only SIRT college emails (@sirt.ac.in) are allowed to register.",
+            "current_user": None
+        })
+
     existing = db.query(models.User).filter(models.User.email == email).first()
     if existing:
         return templates.TemplateResponse("register.html", {
@@ -197,4 +208,18 @@ def user_profile(user_id: int, request: Request,
         "request": request, "profile_user": profile_user,
         "user_posts": user_posts, "current_user": current_user
     })
- 
+@app.post("/posts/{post_id}/delete")
+def delete_post_page(post_id: int,
+                     db: Session = Depends(get_db),
+                     current_user=Depends(get_current_user_from_cookie)):
+    if not current_user:
+        return RedirectResponse("/login", status_code=302)
+    
+    post = db.query(models.Post).filter(models.Post.id == post_id).first()
+    
+    # Author OR admin can delete
+    if post and (post.author_id == current_user.id or current_user.is_admin):
+        db.delete(post)
+        db.commit()
+    
+    return RedirectResponse("/", status_code=302)
