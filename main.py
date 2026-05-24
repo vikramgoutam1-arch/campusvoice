@@ -220,6 +220,7 @@ def delete_post_page(post_id: int,
     
     # Author OR admin can delete
     if post and (post.author_id == current_user.id or current_user.is_admin):
+        print("DELETING POST")
         db.delete(post)
         db.commit()
         db.expire_all()
