@@ -102,17 +102,6 @@ def post_page(post_id: int, request: Request,
         "comments": top_comments, "current_user": current_user
     })
  
-# DELETE POST
-@app.post("/posts/{post_id}/delete")
-def delete_post_page(post_id: int, db: Session = Depends(get_db),
-                     current_user=Depends(get_current_user_from_cookie)):
-    if not current_user:
-        return RedirectResponse("/login", status_code=302)
-    post = db.query(models.Post).filter(models.Post.id == post_id).first()
-    if post and post.author_id == current_user.id:
-        db.delete(post)
-        db.commit()
-    return RedirectResponse("/", status_code=302)
  
 # ADD COMMENT
 @app.post("/posts/{post_id}/comments")
