@@ -20,6 +20,7 @@ class User(Base):
     comments = relationship("Comment", back_populates="author", cascade="all, delete-orphan")
 class Post(Base):
     __tablename__ = "posts"
+    __table_args__ = {'extend_existing': True}
 
     id = Column(Integer, primary_key=True, nullable=False)
     title = Column(String, nullable=False)
@@ -34,6 +35,7 @@ class Post(Base):
     comments = relationship("Comment", back_populates="post", cascade="all, delete-orphan")
 class Comment(Base):
     __tablename__ = "comments"
+    __table_args__ = {'extend_existing': True}
 
     id = Column(Integer, primary_key=True, nullable=False)
     content = Column(Text, nullable=False)
@@ -49,6 +51,7 @@ class Comment(Base):
 
 class User(Base):
     __tablename__ = "users"
+    __table_args__ = {'extend_existing': True}
 
     id = Column(Integer, primary_key=True, nullable=False)
     username = Column(String, nullable=False, unique=True)
