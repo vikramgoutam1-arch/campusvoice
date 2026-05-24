@@ -214,12 +214,13 @@ def delete_post_page(post_id: int,
                      current_user=Depends(get_current_user_from_cookie)):
     if not current_user:
         return RedirectResponse("/login", status_code=302)
-    
+    fresh_user = db.query(models.User).filter(
+        models.User.id == current_user.id).first()
     post = db.query(models.Post).filter(models.Post.id == post_id).first()
     
     # Author OR admin can delete
     if post and (post.author_id == current_user.id or current_user.is_admin):
         db.delete(post)
         db.commit()
-    
+        db.expire_all()
     return RedirectResponse("/", status_code=302)
