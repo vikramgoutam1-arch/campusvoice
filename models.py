@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, ForeignKey, TIMESTAMP, text
+from sqlalchemy import Column, Integer, String, Text, ForeignKey, TIMESTAMP, text, Boolean
 from sqlalchemy.orm import relationship
 from database import Base
 
@@ -60,7 +60,7 @@ class User(Base):
     created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
     
     # Add this new line
-    is_admin = Column(bool, default=False, server_default='false')
+    is_admin = Column(Boolean, nullable=False, server_default='false')
 
     posts = relationship("Post", back_populates="author", cascade="all, delete-orphan")
     comments = relationship("Comment", back_populates="author", cascade="all, delete-orphan")
