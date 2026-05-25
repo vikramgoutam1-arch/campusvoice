@@ -1,5 +1,17 @@
 {% extends "layout.html" %}
 {% block content %}
+{% if not current_user %}
+<div class="bg-indigo-950 border border-indigo-800 rounded-2xl p-5 mb-6 flex items-center justify-between gap-4">
+  <div>
+    <p class="font-display font-bold text-white text-base">Join the conversation 🎓</p>
+    <p class="text-indigo-300 text-sm mt-0.5">Register with your SIRT email to post, comment and connect with students.</p>
+  </div>
+  <div class="flex gap-3 shrink-0">
+    <a href="/login" class="text-sm font-semibold text-indigo-300 hover:text-white transition-colors px-4 py-2">Login</a>
+    <a href="/register" class="bg-indigo-600 text-white text-sm font-bold px-5 py-2 rounded-xl hover:bg-indigo-500 transition-colors">Join Free</a>
+  </div>
+</div>
+{% endif %}
 <div class="space-y-4">
   {% for post in posts %}
     <article class="bg-gray-900 border border-gray-800 rounded-2xl p-5 shadow-sm transition-all duration-150 hover:-translate-y-0.5 hover:border-brand-dark group">
